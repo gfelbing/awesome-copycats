@@ -11,6 +11,9 @@ local awful = require("awful")
 local wibox = require("wibox")
 local os    = { getenv = os.getenv }
 
+local xresources = require("beautiful.xresources")
+local dpi = xresources.apply_dpi
+
 local colors = {
     --white
     [0]  = "#f8f8f4",
@@ -42,14 +45,14 @@ local colors = {
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-light"
 theme.wallpaper                                 = theme.dir .. "/wall.png"
-theme.font                                      = "xos4 hack 11"
+theme.font                                      = "xos4 hack 12"
 theme.fg_normal                                 = colors[7]
 theme.fg_focus                                  = colors[15]
 theme.fg_urgent                                 = colors[1]
 theme.bg_normal                                 = colors[0]
 theme.bg_focus                                  = colors[8]
 theme.bg_urgent                                 = colors[3]
-theme.border_width                              = 1
+theme.border_width                              = dpi(0.5)
 theme.border_normal                             = "#3F3F3F"
 theme.border_focus                              = "#7F7F7F"
 theme.border_marked                             = "#CC9393"
@@ -57,8 +60,8 @@ theme.tasklist_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_focus                         = theme.bg_focus
 theme.titlebar_bg_normal                        = theme.bg_normal
 theme.titlebar_fg_focus                         = theme.fg_focus
-theme.menu_height                               = 16
-theme.menu_width                                = 140
+theme.menu_height                               = dpi(16)
+theme.menu_width                                = dpi(140)
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
 theme.taglist_squares_sel                       = theme.dir .. "/icons/square_sel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/square_unsel.png"
@@ -119,7 +122,7 @@ local separators = lain.util.separators
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = awful.widget.watch(
-    "date +'%a %d %b %R'", 60,
+    "date +'%a %Y-%m-%d %H:%M W%V'", 60,
     function(widget, stdout)
         widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
@@ -129,7 +132,7 @@ local clock = awful.widget.watch(
 theme.cal = lain.widget.calendar({
     attach_to = { clock },
     notification_preset = {
-        font = "xos4 Terminus 10",
+        font = "xos4 Hack 11",
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
@@ -283,6 +286,9 @@ local net = lain.widget.net({
 local spr     = wibox.widget.textbox(' ')
 local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
 local arrl_ld = separators.arrow_left("alpha", theme.bg_focus)
+local arrr_dl = separators.arrow_right(theme.bg_focus, "alpha")
+local arrr_ld = separators.arrow_right("alpha", theme.bg_focus)
+
 
 function theme.at_screen_connect(s)
     -- Quake application
@@ -312,10 +318,20 @@ function theme.at_screen_connect(s)
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons)
 
     -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, awful.util.tasklist_buttons)
+    s.mytasklist = awful.widget.tasklist(
+        s,
+        awful.widget.tasklist.filter.currenttags, 
+        awful.util.tasklist_buttons
+        )
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = 18, bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({ 
+        position = "top", 
+        screen = s, 
+        height = dpi(16),
+        bg = theme.bg_normal, 
+        fg = theme.fg_normal 
+    })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -323,13 +339,18 @@ function theme.at_screen_connect(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             --spr,
+            arrr_dl,
             s.mytaglist,
+            arrr_ld,
+            arrr_dl,
             s.mypromptbox,
             spr,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            arrl_ld,
+            arrl_dl,
             wibox.widget.systray(),
             spr,
             arrl_ld,

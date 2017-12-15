@@ -85,8 +85,8 @@ local guieditor    = "gedit"
 awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4", "5", "6","7", "8", "9" }
 awful.layout.layouts = {
+    --awful.layout.suit.floating,
     awful.layout.suit.fair,
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -174,6 +174,12 @@ local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.ge
 beautiful.init(theme_path)
 -- }}}
 
+-- {{{ autorun
+awful.util.spawn("nm-applet")
+awful.util.spawn("xscreensaver -nosplash")
+
+-- }}}
+
 -- {{{ Menu
 local myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end },
@@ -223,6 +229,9 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+    -- Lock
+    awful.key({ modkey, "Control" }, "l", function() os.execute("xscreensaver-command -lock") end),
+
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
     awful.key({ altkey }, "p", function() os.execute("screenshot") end,
