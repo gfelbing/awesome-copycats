@@ -228,7 +228,26 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
+-- audio helper
+local audio = {
+    mute = function()
+        os.execute("amixer sset Master toggle")
+    end,
+    lower = function()
+        os.execute("amixer sset Master 5%-")
+    end,
+    raise = function()
+        os.execute("amixer sset Master 5%+")
+    end
+}
+
 globalkeys = awful.util.table.join(
+    -- Audio
+    awful.key({}, "XF86AudioLowerVolume", audio.lower, { description = "lower volume", group = "audio" }),
+    awful.key({}, "XF86AudioRaiseVolume", audio.raise, { description = "raise volume", group = "audio" }),
+    awful.key({}, "XF86MonBrightnessUp", function() os.execute("light -A 5") end, { description = "brightness up", group = "screen" }),
+    awful.key({}, "XF86MonBrightnessDown", function() os.execute("light -U 5") end, { description = "brightness down", group = "screen" }),
+ 
     -- Lock
     awful.key({ modkey, "Control" }, "l", function() os.execute("xscreensaver-command -lock") end),
 
