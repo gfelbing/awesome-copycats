@@ -290,13 +290,13 @@ globalkeys = awful.util.table.join(
     -- By direction client focus
     awful.key({ modkey }, "j",
         function()
-            awful.client.focus.bydirection("down")
+            awful.client.focus.byidx(1)
             if client.focus then client.focus:raise() end
         end,
         {description = "focus down", group = "client"}),
     awful.key({ modkey }, "k",
         function()
-            awful.client.focus.bydirection("up")
+            awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end,
         {description = "focus up", group = "client"}),
