@@ -59,21 +59,7 @@ run_once({ "unclutter -root" }) -- entries must be comma-separated
 
 -- {{{ Variable definitions
 
-local themes = {
-    "blackburn",       -- 1
-    "copland",         -- 2
-    "dremora",         -- 3
-    "holo",            -- 4
-    "multicolor",      -- 5
-    "powerarrow",      -- 6
-    "powerarrow-dark", -- 7
-    "rainbow",         -- 8
-    "steamburn",       -- 9
-    "vertex",          -- 10
-    "powerarrow-light",-- 11
-}
-
-local chosen_theme = themes[11]
+local chosen_theme = "powerarrow-light"-- string.format("powerarrow-%s", os.getenv("THEME") )
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "termite"
