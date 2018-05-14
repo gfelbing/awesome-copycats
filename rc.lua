@@ -162,7 +162,6 @@ beautiful.init(theme_path)
 
 -- {{{ autorun
 awful.util.spawn("nm-applet")
-awful.util.spawn("xscreensaver -nosplash")
 
 -- }}}
 
@@ -235,7 +234,7 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessDown", function() os.execute("light -U 5") end, { description = "brightness down", group = "screen" }),
  
     -- Lock
-    awful.key({ modkey, "Control" }, "l", function() os.execute("xscreensaver-command -lock") end),
+    awful.key({ modkey, "Control" }, "l", function() os.execute("lock") end),
 
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
